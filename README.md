@@ -128,7 +128,7 @@ Note that code written without a test-first approach is often very hard to test!
 
 Don't hesitate to nest your suites to structure logically your tests in subsets.
 
-**:(**
+**Bad**
 
 ```js
 describe('A set of functionalities', () => {
@@ -146,7 +146,7 @@ describe('A set of functionalities', () => {
 });
 ```
 
-**:)**
+**Good**
 
 ```js
 describe('A set of functionalities', () => {
@@ -174,7 +174,7 @@ describe('A set of functionalities', () => {
 
 Tests names should be concise, explicit, descriptive and in correct English. Read the output of the spec runner and verify that it is understandable! Keep in mind that someone else will read it too. Tests can be the live documentation of the code.
 
-**:(**
+**Bad**
 
 ```js
 describe('myGallery', () => {
@@ -185,7 +185,7 @@ describe('myGallery', () => {
 });
 ```
 
-**:)**
+**Good**
 
 ```js
 describe('The Gallery instance', () => {
@@ -254,7 +254,7 @@ Always use simple statements. Loops and conditionals must not be used. If they a
 + Conditionals: you don't know which path the test will take
 + Loops: you could be sharing state between tests
 
-**:(**
+**Bad**
 
 ```js
 it('should properly sanitize strings', () => {
@@ -273,7 +273,7 @@ it('should properly sanitize strings', () => {
 });
 ```
 
-**:)**
+**Good**
 
 ```js
 it('should properly sanitize strings', () => {
@@ -317,7 +317,7 @@ it('should sanitize a filename containing more than one dot', () => {
 
 Remember, unit tests are a design specification of how a certain *behaviour* should work, not a list of observations of everything the code happens to do.
 
-**:(**
+**Bad**
 
 ```js
 it('should multiply the number passed as parameter and subtract one', () => {
@@ -332,7 +332,7 @@ it('should multiply the number passed as parameter and subtract one', () => {
 });
 ```
 
-**:)**
+**Good**
 
 ```js
 it('should multiply the number passed as parameter and subtract one', () => {
@@ -347,7 +347,7 @@ This will improve maintainability. Your test is no longer tied to implementation
 
 ### Properly setup the actions that apply to all the tests involved
 
-**:(**
+**Bad**
 
 ```js
 describe('Saving the user profile', () => {
@@ -399,7 +399,7 @@ describe('Saving the user profile', () => {
 
 The setup code should apply to all the tests:
 
-**:)**
+**Good**
 
 ```js
 describe('Saving the user profile', () => {
@@ -456,7 +456,7 @@ Factories can:
 
 There's a trade-off to find here between applying the DRY principle and readability.
 
-**:(**
+**Bad**
 
 ```js
 describe('User profile module', () => {
@@ -488,10 +488,10 @@ describe('User profile module', () => {
 });
 ```
 
-**:)**
+**Good**
 
 ```js
-describe('User profile module', () => {  
+describe('User profile module', () => {
   function createProfileModule({
     element = document.getElementById('my-profile'),
     likes = 0,
@@ -523,7 +523,7 @@ describe('User profile module', () => {
 
 Factories are particularly useful when dealing with the DOM:
 
-**:(**
+**Bad**
 
 ```js
 describe('The search component', () => {
@@ -564,7 +564,7 @@ describe('The search component', () => {
 });
 ```
 
-**:)**
+**Good**
 
 ```js
 function createHTMLFixture() {
@@ -616,7 +616,7 @@ The API documentation of the testing framework/library should be your bedside bo
 
 Having a good knowledge of the API can help you in reducing the size/complexity of your test code and, in general, help you during development. A simple example:
 
-**:(**
+**Bad**
 
 ```js
 it('should call a method with the proper arguments', () => {
@@ -638,7 +638,7 @@ it('should do much more but not now', () => {
 });*/
 ```
 
-**:)**
+**Good**
 
 ```js
 fit('should call once a method with the proper arguments', () => {
@@ -668,7 +668,7 @@ More information on the [Jasmine website](http://jasmine.github.io).
 
 If a method has several end results, each one should be tested separately. Whenever a bug occurs, it will help you locate the source of the problem.
 
-**:(**
+**Bad**
 
 ```js
 it('should send the profile data to the server and update the profile view properly', () => {
@@ -677,7 +677,7 @@ it('should send the profile data to the server and update the profile view prope
 });
 ```
 
-**:)**
+**Good**
 
 ```js
 it('should send the profile data to the server', () => {
@@ -697,7 +697,7 @@ Beware that writing "AND" or "OR" when naming your test smells bad...
 
 "Strange behaviour" usually happens at the edges... Remember that your tests can be the live documentation of your code.
 
-**:(**
+**Bad**
 
 ```js
 it('should properly calculate a RPN expression', () => {
@@ -706,7 +706,7 @@ it('should properly calculate a RPN expression', () => {
 });
 ```
 
-**:)**
+**Good**
 
 ```js
 describe('The RPN expression evaluator', () => {
@@ -736,7 +736,7 @@ describe('The RPN expression evaluator', () => {
 
 ### When applying TDD, always start by writing the simplest failing test
 
-**:(**
+**Bad**
 
 ```js
 it('should suppress all chars that appear multiple times', () => {
@@ -744,7 +744,7 @@ it('should suppress all chars that appear multiple times', () => {
 });
 ```
 
-**:)**
+**Good**
 
 ```js
 it('should return an empty string when passed an empty string', () => {
@@ -760,7 +760,7 @@ From there, start building the functionalities incrementally.
 
 Build your tests suite from the simple case to the more complex ones. Keep in mind the incremental design. Deliver software fast, incrementally, and in short iterations.
 
-**:(**
+**Bad**
 
 ```js
 it('should return null when the expression is an empty string', () => {
@@ -774,7 +774,7 @@ it('should properly calculate a RPN expression', () => {
 });
 ```
 
-**:)**
+**Good**
 
 ```js
 describe('The RPN expression evaluator', () => {
@@ -815,7 +815,7 @@ describe('The RPN expression evaluator', () => {
 
 ### Test the behaviour, not the internal implementation
 
-**:(**
+**Bad**
 
 ```js
 it('should add a user in memory', () => {
@@ -828,7 +828,7 @@ it('should add a user in memory', () => {
 
 A better approach is to test at the same level of the API:
 
-**:)**
+**Good**
 
 ```js
 it('should add a user in memory', () => {
@@ -852,7 +852,7 @@ Here, a balance has to be found, unit-testing some key parts can be beneficial.
 
 ### Don't mock everything
 
-**:(**
+**Bad**
 
 ```js
 describe('when the user has already visited the page', () => {
@@ -878,7 +878,7 @@ describe('when the user has already visited the page', () => {
 
 This test fails, because the survey is considered disabled. Let's fix this:
 
-**:)**
+**Good**
 
 ```js
 describe('when the user has already visited the page', () => {
@@ -914,7 +914,7 @@ describe('when the user has already visited the page', () => {
 
 This will work... but needs a lot of code. Let's try a simpler approach:
 
-**:(**
+**Bad**
 
 ```js
 describe('when the user has already visited the page', () => {
