@@ -1,12 +1,8 @@
 # A guide to unit testing in JavaScript
 
-## This is a living document. New ideas are always welcome. Contribute: fork, clone, branch, commit, push, pull request.
+### Thanks
 
-### Disclaimer
-
-> All the information provided has been compiled & adapted from the references cited at the end of the document.
-> The guidelines are illustrated by my own examples, fruit of my personal experience writing and reviewing unit tests.
-> Many thanks to all of the sources of information & contributors.
+Forked from Marc Mignonsin: https://github.com/mawrkus/js-unit-testing-guide
 
 ## Table of contents
 
