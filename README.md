@@ -10,7 +10,7 @@ Forked from Marc Mignonsin: https://github.com/mawrkus/js-unit-testing-guide
   + [Unit tests](#unit-tests)
   + [Design principles](#design-principles)
 2. Guidelines
-  + [Whenever possible, use TDD](#whenever-possible-use-tdd)
+  + [When possible, use TDD](#whenever-possible-use-tdd)
   + [Structure your tests properly](#structure-your-tests-properly)
   + [Name your tests properly](#name-your-tests-properly)
   + [Don't comment out tests](#dont-comment-out-tests)
@@ -25,8 +25,8 @@ Forked from Marc Mignonsin: https://github.com/mawrkus/js-unit-testing-guide
   + [Test the behaviour, not the internal implementation](#test-the-behaviour-not-the-internal-implementation)
   + [Don't mock everything](#dont-mock-everything)
   + [Create new tests for every defect](#create-new-tests-for-every-defect)
-  + [Don't write unit tests for complex user interactions](#dont-write-unit-tests-for-complex-user-interactions)
-  + [Test simple user actions](#test-simple-user-actions)
+  + [Do not write unit tests for complex user interactions](#dont-write-unit-tests-for-complex-user-interactions)
+  + [Do write unit tests for simple user actions](#test-simple-user-actions)
   + [Review test code first](#review-test-code-first)
   + [Practice code katas, learn with pair programming](#practice-code-katas-learn-with-pair-programming)
 3. [References](#references)
@@ -96,7 +96,7 @@ All the following examples assume the usage of the [Jasmine](http://jasmine.gith
 
 ---------------------------------------
 
-### Whenever possible, use TDD
+### When possible, use TDD
 
 TDD is a _design process_, not a testing process. TDD is a robust way of designing software components ("units") interactively so that their behaviour is specified through unit tests.
 
@@ -240,7 +240,7 @@ describe('The Gallery instance', () => {
 
 ### Don't comment out tests
 
-Never. Ever. Tests have a reason to be or not.
+Tests have a reason to be or not.
 
 Don't comment them out because they are too slow, too complex or produce false negatives. Instead, make them fast, simple and trustworthy. If not, remove them completely.
 
@@ -820,7 +820,7 @@ Whenever a bug is found, create a test that replicates the problem **before touc
 
 • [Back to ToC](#user-content-table-of-contents) •
 
-### Don't write unit tests for complex user interactions
+### Do not write unit tests for complex user interactions
 
 Examples of complex user interactions:
 
