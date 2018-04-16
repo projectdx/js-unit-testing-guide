@@ -17,7 +17,6 @@ Forked from Marc Mignonsin: https://github.com/mawrkus/js-unit-testing-guide
   + [Avoid logic in your tests](#avoid-logic-in-your-tests)
   + [Don't write unnecessary expectations](#dont-write-unnecessary-expectations)
   + [Properly setup the actions that apply to all the tests involved](#properly-setup-the-actions-that-apply-to-all-the-tests-involved)
-  + [Consider using factory functions in the tests](#consider-using-factory-functions-in-the-tests)
   + [Know your testing framework API](#know-your-testing-framework-api)
   + [Don't test multiple concerns in the same test](#dont-test-multiple-concerns-in-the-same-test)
   + [Cover the general case and the edge cases](#cover-the-general-case-and-the-edge-cases)
@@ -221,7 +220,7 @@ describe('[unit of work]', () => {
 
 For example:
 
-**:) :)**
+**Good**
 
 ```js
 describe('The Gallery instance', () => {
@@ -287,7 +286,7 @@ it('should properly sanitize strings', () => {
 
 Better: write a test for each type of sanitization. It will give a nice output of all possible cases, improving readability and maintainability.
 
-**:) :)**
+**Better**
 
 ```js
 it('should sanitize a string containing non-ASCII chars', () => {
@@ -446,169 +445,6 @@ Consider keeping the setup code minimal to preserve readability and maintainabil
 
 • [Back to ToC](#user-content-table-of-contents) •
 
-### Consider using factory functions in the tests
-
-Factories can:
-
-- help reduce the setup code, especially if you use dependency injection
-- make each test more readable, since the creation is a single function call that can be in the test itself instead of the setup
-- provide flexibility when creating new instances (setting an initial state, for example)
-
-There's a trade-off to find here between applying the DRY principle and readability.
-
-**Bad**
-
-```js
-describe('User profile module', () => {
-  let profileModule;
-  let pubSub;
-
-  beforeEach(() => {
-    let element = document.getElementById('my-profile');
-    pubSub = new PubSub({ sync: true });
-
-    profileModule = new ProfileModule({
-      element,
-      pubSub,
-      likes: 0
-    });
-  });
-
-  it('should publish a topic when a new "like" is given', () => {
-    spyOn(pubSub, 'notify');
-    profileModule.incLikes();
-    expect(pubSub.notify).toHaveBeenCalledWith('likes:inc', { count: 1 });
-  });
-
-  it('should retrieve the correct number of likes', () => {
-    profileModule.incLikes();
-    profileModule.incLikes();
-    expect(profileModule.getLikes()).toBe(2);
-  });
-});
-```
-
-**Good**
-
-```js
-describe('User profile module', () => {
-  function createProfileModule({
-    element = document.getElementById('my-profile'),
-    likes = 0,
-    pubSub = new PubSub({ sync: true })
-  })
-  {
-    return new ProfileModule({ element, likes, pubSub });
-  }
-
-  it('should publish a topic when a new "like" is given', () => {
-    const pubSub = jasmine.createSpyObj('pubSub', ['notify']);
-    const profileModule = createProfileModule({ pubSub });
-
-    profileModule.incLikes();
-
-    expect(pubSub.notify).toHaveBeenCalledWith('likes:inc');
-  });
-
-  it('should retrieve the correct number of likes', () => {
-    const profileModule = createProfileModule({ likes: 40 });
-
-    profileModule.incLikes();
-    profileModule.incLikes();
-
-    expect(profileModule.getLikes()).toBe(42);
-  });
-});
-```
-
-Factories are particularly useful when dealing with the DOM:
-
-**Bad**
-
-```js
-describe('The search component', () => {
-  describe('when the search button is clicked', () => {
-    let container;
-    let form;
-    let searchInput;
-    let submitInput;
-
-    beforeEach(() => {
-      fixtures.inject(`<div id="container">
-        <form class="js-form" action="/search">
-          <input type="search">
-          <input type="submit" value="Search">
-        </form>
-      </div>`);
-
-      container = document.getElementById('container');
-      form = container.getElementsByClassName('js-form')[0];
-      searchInput = form.querySelector('input[type=search]');
-      submitInput = form.querySelector('input[type=submith]');
-    });
-
-    it('should validate the text entered', () => {
-      const search = new Search({ container });
-      spyOn(search, 'validate');
-
-      search.init();
-
-      input(searchInput, 'peace');
-      click(submitInput);
-
-      expect(search.validate).toHaveBeenCalledWith('peace');
-    });
-
-    // ...
-  });
-});
-```
-
-**Good**
-
-```js
-function createHTMLFixture() {
-  fixtures.inject(`<div id="container">
-    <form class="js-form" action="/search">
-      <input type="search">
-      <input type="submit" value="Search">
-    </form>
-  </div>`);
-
-  const container = document.getElementById('container');
-  const form = container.getElementsByClassName('js-form')[0];
-  const searchInput = form.querySelector('input[type=search]');
-  const submitInput = form.querySelector('input[type=submith]');
-
-  return {
-    container,
-    form,
-    searchInput,
-    submitInput
-  };
-}
-
-describe('The search component', () => {
-  describe('when the search button is clicked', () => {
-    it('should validate the text entered', () => {
-      const { container, form, searchInput, submitInput } = createHTMLFixture();
-      const search = new Search({ container });
-      spyOn(search, 'validate');
-
-      search.init();
-
-      input(searchInput, 'peace');
-      click(submitInput);
-
-      expect(search.validate).toHaveBeenCalledWith('peace');
-    });
-
-    // ...
-  });
-});
-```
-
-• [Back to ToC](#user-content-table-of-contents) •
 
 ### Know your testing framework API
 
@@ -666,7 +502,7 @@ More information on the [Jasmine website](http://jasmine.github.io).
 
 ### Don't test multiple concerns in the same test
 
-If a method has several end results, each one should be tested separately. Whenever a bug occurs, it will help you locate the source of the problem.
+With the exception of Redux-Sagas, if a method has several end results, each one should be tested separately. Whenever a bug occurs, it will help you locate the source of the problem.
 
 **Bad**
 
@@ -941,7 +777,7 @@ describe('when the user has already visited the page', () => {
 We created a permanent storage of data. What happens if we do not properly clean it?
 We might affect the other tests. Let's fix this:
 
-**:) :)**
+**Good**
 
 ```js
 describe('when the user has already visited the page', () => {
@@ -998,7 +834,7 @@ For functional testing, consider using a test automation framework ([Selenium](h
 
 • [Back to ToC](#user-content-table-of-contents) •
 
-### Test simple user actions
+### Do write unit tests for simple user actions
 
 Example of simple user actions:
 
